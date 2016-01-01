@@ -2,11 +2,16 @@ var r = require('rethinkdb');
 
 r.connect(function(err, conn) {
 	if (err) {
-		console.log(err);
+		console.log('connection error', err);
 		return;
 	}
-	
+
 	r.dbCreate('music').run(conn, function(err, res) {
-		console.log(res);
+		if (err) {
+			console.log('failed to create music db', res);
+			return;
+		}
+
+		console.log('response', res);
 	});
 });
