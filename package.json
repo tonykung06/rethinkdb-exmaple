@@ -1,0 +1,22 @@
+{
+  "name": "rethinkdb-exmaple",
+  "version": "1.0.0",
+  "description": "try out rethinkdb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tonykung06/rethinkdb-exmaple.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tonykung06/rethinkdb-exmaple/issues"
+  },
+  "homepage": "https://github.com/tonykung06/rethinkdb-exmaple#readme",
+  "dependencies": {
+    "rethinkdb": "^2.2.1"
+  }
+}
