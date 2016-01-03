@@ -51,6 +51,7 @@ r.connect({
 			console.log('the id', result[0].id);
 
 			r.table('artists').get(result[0].id).run(conn, function(err, res) {
+				console.log(err);
 				console.log(res);
 			});
 		});
