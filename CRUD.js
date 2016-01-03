@@ -41,23 +41,19 @@ r.connect({
 		cursor.toArray(function(err, result) {
 			console.log(result);
 
-			// r.table('artists').get(result[0].id).update({
-			// 	name: 'replaced Tony',
-			// 	email: 'tonykung@tonykung.com'
-			// }).run(conn, function(err, res) {
-			// 	console.log(res);
-			// });
-
-			r.table('artists').get(result[0].id).run(conn, function(err, res) {
-				console.log(err);
+			r.table('artists').get(result[0].id).update({
+				name: 'replaced Tony',
+				email: 'tonykung@tonykung.com'
+			}).run(conn, function(err, res) {
 				console.log(res);
 			});
 
+			r.table('artists').delete().run(conn, function(err, res) {
+				console.log(res);
+			});
+			
 			conn.close();
 		});
 	});
 
-	// r.table('artists').delete().run(conn, function(err, res) {
-	// 	console.log(res);
-	// });
 });
