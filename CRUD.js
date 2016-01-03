@@ -66,7 +66,7 @@ r.connect({
 		function(next) {
 			r.table('artists').pluck(['name', 'age']).concatMap(function(item) {
 				return item('languages').filter(function(lang) {
-					return ['Chinese'].indeOf(lang) > -1;
+					return ['Chinese'].indexOf(lang) > -1;
 				});
 			}).run(conn, function(err, cursor) {
 				cursor.toArray(function(err, result) {
