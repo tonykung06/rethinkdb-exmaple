@@ -24,9 +24,11 @@ r.connect({
 			});
 		},
 		function(next) {
-			r.table('artists').pluck(['name', 'age']).run(conn, function(err, res) {
-				console.log('demo pluck()', res);
-				next();
+			r.table('artists').pluck(['name', 'age']).run(conn, function(err, cursor) {
+				cursor.toArray(function(err, result) {
+					console.log('demo pluck()', result);
+					next();
+				});
 			});
 		},
 		function(next) {
