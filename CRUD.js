@@ -48,8 +48,9 @@ r.connect({
 			// 	console.log(res);
 			// });
 
-		r.table('artists').get(result[0].id).run(conn, function(err, res) {
-			console.log(res);
+			r.table('artists').get(result[0].id).run(conn, function(err, res) {
+				console.log(res);
+			});
 		});
 	});
 
