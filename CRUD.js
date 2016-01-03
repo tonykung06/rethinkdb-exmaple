@@ -21,6 +21,12 @@ r.connect({
 			});
 		},
 		function(next) {
+			r.table('artists').typeOf().run(conn, function(err, res) {
+				console.log('demo typeOf()', res);
+				next();
+			});
+		},
+		function(next) {
 			r.table('artists').insert(artists).run(conn, function(err, res) {
 				console.log('demo insert()', res);
 				next();
