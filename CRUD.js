@@ -34,21 +34,18 @@ r.connect({
 		console.log(res);
 	});
 
-	let id;
-
 	r.table('artists').filter({
 		name: "Another Tony"
-	}).delete().run(conn, function(err, res) {
-		console.log(res);
-		id = res.id;
-	});
-
-	r.table('artists').get(id).replace({
-		id: res.id,
-		name: 'replaced Tony',
-		email: 'tonykung@tonykung.com'
 	}).run(conn, function(err, res) {
 		console.log(res);
+
+		r.table('artists').get(res.id).replace({
+			id: res.id,
+			name: 'replaced Tony',
+			email: 'tonykung@tonykung.com'
+		}).run(conn, function(err, res) {
+			console.log(res);
+		});
 	});
 
 	r.table('artists').delete().run(conn, function(err, res) {
