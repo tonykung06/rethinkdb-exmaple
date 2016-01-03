@@ -8,7 +8,8 @@ r.connect({
 
 	artists.forEach(function(artist) {
 		r.table('artists').insert(artist).run(conn, {
-			durability: 'soft'
+			durability: 'soft',
+			noreply: true
 		}, function(err, res) {
 			console.log(counter);
 			counter++;
