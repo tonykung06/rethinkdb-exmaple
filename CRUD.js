@@ -39,7 +39,7 @@ r.connect({
 			}, {
 				name: "Chris",
 				age: 17,
-				languages: 'English'
+				languages: ['English']
 			}]).run(conn, function(err, res) {
 				console.log('demo insert()', res);
 				next();
@@ -64,9 +64,9 @@ r.connect({
 			});
 		},
 		function(next) {
-			r.table('artists').pluck(['name', 'age']).concatMap(function(item) {
+			r.table('artists').pluck(['name', 'languages']).concatMap(function(item) {
 				return item('languages').filter(function(lang) {
-					return ['Chinese'].indexOf(lang) > -1;
+					return lang.eq('Chinese');
 				});
 			}).run(conn, function(err, cursor) {
 				cursor.toArray(function(err, result) {
