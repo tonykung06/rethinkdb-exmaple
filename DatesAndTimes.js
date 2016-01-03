@@ -23,9 +23,11 @@ r.connect({
 		function(next) {
 			r.table('invoices').filter(function(item) {
 				return item('invoice_date').gt('2012-01-01');
-			}).run(conn, function(err, res) {
-				console.log('demo date comparison()', res);
-				next();
+			}).run(conn, function(err, cursor) {
+				cursor.toArray(function(err, result) {
+					console.log('demo date comparison()', result);
+					next();
+				});
 			});
 		},
 		function(next) {
