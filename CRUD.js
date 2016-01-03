@@ -79,6 +79,7 @@ r.connect({
 		function(next) {
 			r.table('artists').delete().run(conn, function(err, res) {
 				console.log(res);
+				next();
 			});
 		}
 	], function() {
