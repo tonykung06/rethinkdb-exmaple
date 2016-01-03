@@ -23,23 +23,23 @@ r.connect({
 			r.table('artists').insert([{
 				name: "Another Tony",
 				age: 24,
-				motherLanguage: 'English'
+				languages: ['English', 'Chinese']
 			}, {
 				name: "Wini",
 				age: 23,
-				motherLanguage: 'English'
+				languages: ['English']
 			}, {
 				name: "Tommy",
 				age: 30,
-				motherLanguage: 'Chinese'
+				languages: ['Korean']
 			}, {
 				name: "Tony",
 				age: 27,
-				motherLanguage: 'Chinese'
+				languages: ['Chinese']
 			}, {
 				name: "Chris",
 				age: 17,
-				motherLanguage: 'English'
+				languages: 'English'
 			}]).run(conn, function(err, res) {
 				console.log('demo insert()', res);
 				next();
@@ -65,7 +65,9 @@ r.connect({
 		},
 		function(next) {
 			r.table('artists').pluck(['name', 'age']).concatMap(function(item) {
-				return [item('age')];
+				return item('languages').filter(function(lang) {
+					return ['Chinese'].indeOf(lang) > -1;
+				});
 			}).run(conn, function(err, cursor) {
 				cursor.toArray(function(err, result) {
 					console.log('demo concatMap()', result);
