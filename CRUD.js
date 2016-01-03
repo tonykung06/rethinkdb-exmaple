@@ -45,7 +45,7 @@ r.connect({
 			});
 		},
 		function(next) {
-			r.table('artists').hasField('languages').pluck(['name', 'languages']).concatMap(function(item) {
+			r.table('artists').hasFields('languages').pluck(['name', 'languages']).concatMap(function(item) {
 				return item('languages').filter(function(lang) {
 					return lang.eq('Chinese');
 				});
