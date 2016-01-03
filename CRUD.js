@@ -6,5 +6,6 @@ r.connect({
 	r.table('artists').count().run(conn, function(err, res) {
 		console.log(res);
 	});
-
+	
+	conn.close();
 });
