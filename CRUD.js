@@ -41,7 +41,7 @@ r.connect({
 			console.log(result);
 
 			r.table('artists').get(result[0].id).replace({
-				id: res.id,
+				id: result[0].id,
 				name: 'replaced Tony',
 				email: 'tonykung@tonykung.com'
 			}).run(conn, function(err, res) {
