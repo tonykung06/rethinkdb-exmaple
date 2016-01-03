@@ -48,6 +48,16 @@ r.connect({
 			});
 		},
 		function(next) {
+			r.table('artists').pluck(['name', 'age']).concatMap(function(item) {
+				return item('age');
+			}).run(conn, function(err, cursor) {
+				cursor.toArray(function(err, result) {
+					console.log('demo concatMap()', result);
+					next();
+				});
+			});
+		},
+		function(next) {
 			r.table('artists').filter({
 				name: "Another Tony"
 			}).run(conn, function(err, cursor) {
