@@ -7,10 +7,6 @@ r.connect({
 		console.log(res);
 	});
 
-	r.table('artists').count().typeof().run(conn, function(err, res) {
-		console.log(res);
-	});
-
 	r.table('artists').insert({
 		name: "Another Tony"
 	}).run(conn, function(err, res) {
