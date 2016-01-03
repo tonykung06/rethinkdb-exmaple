@@ -8,6 +8,12 @@ r.connect({
 }, function(err, conn) {
 	async.series([
 		function(next) {
+			r.table('artists').delete().run(conn, function(err, res) {
+				console.log('deleting all demo documents', res);
+				next();
+			});
+		},
+		function(next) {
 			r.table('artists').count().run(conn, function(err, res) {
 				console.log('demo count()', res);
 				next();
@@ -48,8 +54,18 @@ r.connect({
 			});
 		},
 		function(next) {
-			r.table('artists').pluck(['name', 'age']).concatMap(function(item) {
+			r.table('artists').pluck(['name', 'age']).map(function(item) {
 				return item('age');
+			}).run(conn, function(err, cursor) {
+				cursor.toArray(function(err, result) {
+					console.log('demo map()', result);
+					next();
+				});
+			});
+		},
+		function(next) {
+			r.table('artists').pluck(['name', 'age']).concatMap(function(item) {
+				return [item('age')];
 			}).run(conn, function(err, cursor) {
 				cursor.toArray(function(err, result) {
 					console.log('demo concatMap()', result);
@@ -123,6 +139,4 @@ r.connect({
 	], function() {
 		conn.close();
 	});
-
-	//r.table('').concatMap();
 });
