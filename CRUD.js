@@ -3,6 +3,7 @@
 var r = require('rethinkdb');
 var async = require('async');
 var artists = require('./data/artists');
+var invoices = require('./data/invoices');
 
 r.connect({
 	db: 'music'
@@ -10,6 +11,12 @@ r.connect({
 	async.series([
 		function(next) {
 			r.table('artists').delete().run(conn, function(err, res) {
+				console.log('deleting all demo documents', res);
+				next();
+			});
+		},
+		function(next) {
+			r.table('invoices').delete().run(conn, function(err, res) {
 				console.log('deleting all demo documents', res);
 				next();
 			});
@@ -33,6 +40,12 @@ r.connect({
 			});
 		},
 		function(next) {
+			r.table('invoices').insert(invoices).run(conn, function(err, res) {
+				console.log('demo insert()', res);
+				next();
+			});
+		},
+		function(next) {
 			r.table('invoices')('customer').merge(function(customer) {
 				return {
 					invoices: r.table('invoices').filter(function(invoice) {
@@ -47,7 +60,7 @@ r.connect({
 				}
 				
 				cursor.toArray(function(err, result) {
-					console.log('demo merge())', result);
+					console.log('demo merge()', result);
 					next();
 				});
 			});
@@ -150,6 +163,12 @@ r.connect({
 		},
 		function(next) {
 			r.table('artists').delete().run(conn, function(err, res) {
+				console.log('deleting all demo documents', res);
+				next();
+			});
+		},
+		function(next) {
+			r.table('invoices').delete().run(conn, function(err, res) {
 				console.log('deleting all demo documents', res);
 				next();
 			});
