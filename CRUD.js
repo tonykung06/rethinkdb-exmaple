@@ -39,15 +39,17 @@ r.connect({
 						return invoice('customer_id').eq(customer('customer_id'));
 					}).coerceTo('array')
 				};
-			}).run(conn, function(err, res) {
+			}).run(conn, function(err, cursor) {
 				if (err) {
 					console.log(err);
 					next(err);
 					return;
 				}
 				
-				console.log(res);
-				next();
+				cursor.toArray(function(err, result) {
+					console.log('demo merge())', result);
+					next();
+				});
 			});
 		},
 		function(next) {
