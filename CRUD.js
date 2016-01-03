@@ -15,6 +15,29 @@ r.connect({
 			});
 		},
 		function(next) {
+			//subquery
+			// r.table('marvel').merge(function (hero) {
+			//     return { weapons: r.table('weapons').get(hero('weaponId')) };
+			// }).run(conn, callback)
+			// 
+			// another subquery
+			r.table('invoices')('customer').merge(function(customer) {
+				return {
+					invoices: r.table('invoices').filter(function(invoice) {
+						return invoice('customer_id').eq(customer('customer_id'));
+					}).coerceTo('array')
+				};
+			}).run(conn, function(err, res) {
+				if (err) {
+					console.log(err);
+					next(err);
+					return;
+				}
+				
+				console.log(res);
+			});
+		},
+		function(next) {
 			r.table('artists').count().run(conn, function(err, res) {
 				console.log('demo count()', res);
 				next();
