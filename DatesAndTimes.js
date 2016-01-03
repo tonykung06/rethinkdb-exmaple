@@ -22,7 +22,7 @@ r.connect({
 		},
 		function(next) {
 			r.table('invoices').filter(function(item) {
-				return r.ISO8601(item('invoice_date')).gt(r.time(2012, 1, 1)).and(item('invoice_date').lt(r.time(2012, 12, 31)));
+				return r.ISO8601(item('invoice_date')).gt(r.time(2012, 1, 1, 'Z')).and(item('invoice_date').lt(r.time(2012, 12, 31, 'Z')));
 			}).pluck('invoice_date').run(conn, function(err, cursor) {
 				cursor.toArray(function(err, result) {
 					console.log('demo date comparison()', result);
