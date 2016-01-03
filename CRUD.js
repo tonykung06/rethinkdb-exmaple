@@ -2,6 +2,7 @@
 
 var r = require('rethinkdb');
 var async = require('async');
+var artists = require('./data/artists');
 
 r.connect({
 	db: 'music'
@@ -20,27 +21,7 @@ r.connect({
 			});
 		},
 		function(next) {
-			r.table('artists').insert([{
-				name: "Another Tony",
-				age: 24,
-				languages: ['English', 'Chinese']
-			}, {
-				name: "Wini",
-				age: 23,
-				languages: ['English']
-			}, {
-				name: "Tommy",
-				age: 30,
-				languages: ['Korean']
-			}, {
-				name: "Tony",
-				age: 27,
-				languages: ['Chinese']
-			}, {
-				name: "Chris",
-				age: 17,
-				languages: ['English']
-			}]).run(conn, function(err, res) {
+			r.table('artists').insert(artists).run(conn, function(err, res) {
 				console.log('demo insert()', res);
 				next();
 			});
@@ -64,13 +45,22 @@ r.connect({
 			});
 		},
 		function(next) {
-			r.table('artists').pluck(['name', 'languages']).concatMap(function(item) {
+			r.table('artists').hasField('languages').pluck(['name', 'languages']).concatMap(function(item) {
 				return item('languages').filter(function(lang) {
 					return lang.eq('Chinese');
 				});
 			}).run(conn, function(err, cursor) {
 				cursor.toArray(function(err, result) {
-					console.log('demo concatMap()', result);
+					console.log('demo hasFields(), concatMap()', result);
+					next();
+				});
+			});
+		},
+		function(next) {
+			//the same as hasFields() + pluck()
+			r.table('artists').withFields('languages').run(conn, function(err, cursor) {
+				cursor.toArray(function(err, result) {
+					console.log('demo withFields()', result);
 					next();
 				});
 			});
