@@ -47,7 +47,7 @@ r.connect({
 			}).run(conn, function(err, res) {
 				console.log(res);
 			});
-		})''
+		});
 	});
 
 	r.table('artists').delete().run(conn, function(err, res) {
