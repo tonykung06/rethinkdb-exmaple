@@ -14,19 +14,35 @@ r.connect({
 			});
 		},
 		function(next) {
-			r.table('artists').insert({
+			r.table('artists').insert([{
 				name: "Another Tony",
 				age: 24,
 				motherLanguage: 'English'
-			}).run(conn, function(err, res) {
+			}, {
+				name: "Wini",
+				age: 23,
+				motherLanguage: 'English'
+			}, {
+				name: "Tommy",
+				age: 30,
+				motherLanguage: 'Chinese'
+			}, {
+				name: "Tony",
+				age: 27,
+				motherLanguage: 'Chinese'
+			}, {
+				name: "Chris",
+				age: 17,
+				motherLanguage: 'English'
+			}]).run(conn, function(err, res) {
 				console.log('demo insert()', res);
 				next();
 			});
 		},
 		function(next) {
-			r.table('artists').pluck(['name', 'age']).run(conn, function(err, cursor) {
+			r.table('artists').pluck(['name', 'age']).orderBy('age').skip(1).limit(3).skip(1).run(conn, function(err, cursor) {
 				cursor.toArray(function(err, result) {
-					console.log('demo pluck()', result);
+					console.log('demo pluck(), orderBy(), limit(), skip()', result);
 					next();
 				});
 			});
