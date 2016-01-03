@@ -21,6 +21,12 @@ r.connect({
 		console.log(res);
 	});
 
+	r.table('artists').filter(function(artist) {
+		return artist('name').match('.*Tony');
+	}).run(conn, function(err, res) {
+		console.log(res);
+	});
+
 	r.table('artists').filter({
 		name: "Another Tony"
 	}).delete().run(conn, function(err, res) {
@@ -51,7 +57,7 @@ r.connect({
 			r.table('artists').delete().run(conn, function(err, res) {
 				console.log(res);
 			});
-			
+
 			conn.close();
 		});
 	});
