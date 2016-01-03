@@ -35,7 +35,8 @@ r.connect({
 	});
 
 	r.table('artists').filter({
-		name: "Another Tony"
+		name: "Another Tony",
+		title: "my title"
 	}).run(conn, function(err, cursor) {
 		cursor.toArray(function(err, result) {
 			console.log(result);
