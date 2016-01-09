@@ -62,7 +62,7 @@ var queryByIndex = function(next) {
 	r.connect({
 		db: 'music'
 	}, function(err, conn) {
-		r.table('artists').getAll('Tony', {
+		r.table('artists').indexWait("name_index").getAll('Tony', {
 			index: 'name_index'
 		}).run(conn, function(err, res) {
 			console.log(res);
@@ -77,7 +77,8 @@ async.series({
 	created: createDb,
 	tables: createTables,
 	data: insertData,
-	index: addIndex
+	index: addIndex,
+	query: queryByIndex
 }, function(err, res) {
 	console.log(res);
 });
