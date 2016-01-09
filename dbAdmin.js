@@ -69,10 +69,19 @@ var queryByIndex = function(next) {
 		r.table('artists').indexWait("name_index").run(conn, function(err, res) {
 			r.table('artists').getAll('Tony', {
 				index: 'name_index'
-			}).run(conn, function(err, res) {
-				console.log(err, res);
+			}).run(conn, function(err, cursor) {
 				conn.close();
-				next(err, res);
+				
+				if (err) {
+					console.log(err);
+					next(err);
+					return;
+				}
+				
+				cursor.toArray(function(err, result) {
+					console.log(result);
+					next();
+				});
 			});
 		})
 	});
