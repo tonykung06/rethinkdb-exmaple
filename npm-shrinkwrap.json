@@ -1,0 +1,23 @@
+{
+  "name": "rethinkdb-exmaple",
+  "version": "1.0.0",
+  "dependencies": {
+    "async": {
+      "version": "1.5.0",
+      "from": "async@latest",
+      "resolved": "https://registry.npmjs.org/async/-/async-1.5.0.tgz"
+    },
+    "rethinkdb": {
+      "version": "2.2.1",
+      "from": "rethinkdb@latest",
+      "resolved": "https://registry.npmjs.org/rethinkdb/-/rethinkdb-2.2.1.tgz",
+      "dependencies": {
+        "bluebird": {
+          "version": "2.10.2",
+          "from": "bluebird@>=2.3.2 <3.0.0",
+          "resolved": "https://registry.npmjs.org/bluebird/-/bluebird-2.10.2.tgz"
+        }
+      }
+    }
+  }
+}
