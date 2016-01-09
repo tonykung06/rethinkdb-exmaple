@@ -121,5 +121,5 @@ async.series([
 	queryByIndex,
 	sortByIndex
 ], function(err, res) {
-	console.log(res);
+	console.log('==================================\n', err, res);
 });
