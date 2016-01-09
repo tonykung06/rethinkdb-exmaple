@@ -112,6 +112,55 @@ var sortByIndex = function(next) {
 	});
 };
 
+var dropIndex = function(next) {
+	r.connect({
+		db: 'music'
+	}, function(err, conn) {
+		r.table('artists').indexDrop('name_index').run(conn, function(err, res) {
+			console.log(err, res);
+			conn.close();
+			next(err, res);
+		});
+	});
+};
+
+var addCompoundIndex = function(next) {
+	r.connect({
+		db: 'music'
+	}, function(err, conn) {
+		r.table('artists').indexCreate('my_compound_index', [r.row('name'), r.row('age')]).run(conn, function(err, res) {
+			console.log(err, res);
+			conn.close();
+			next(err, res);
+		});
+	});
+};
+
+var queryByCompoundIndex = function(next) {
+	r.connect({
+		db: 'music'
+	}, function(err, conn) {
+		r.table('artists').indexWait("my_compound_index").run(conn, function(err, res) {
+			r.table('artists').getAll(['Tony', 27], ['Wini', 23], {
+				index: 'my_compound_index'
+			}).run(conn, function(err, cursor) {
+				conn.close();
+
+				if (err) {
+					console.log(err);
+					next(err);
+					return;
+				}
+				
+				cursor.toArray(function(err, result) {
+					console.log(result);
+					next();
+				});
+			});
+		})
+	});
+};
+
 async.series([
 	dropDb,
 	createDb,
@@ -119,7 +168,10 @@ async.series([
 	insertData,
 	addIndex,
 	queryByIndex,
-	sortByIndex
+	sortByIndex,
+	dropIndex,
+	addCompoundIndex,
+	queryByCompoundIndex
 ], function(err, res) {
 	console.log('==================================\n', err, res);
 });
