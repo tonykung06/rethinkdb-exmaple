@@ -67,7 +67,7 @@ var queryByIndex = function(next) {
 		}).run(conn, function(err, res) {
 			console.log(res);
 			conn.close();
-			next();
+			next(err, res);
 		});
 	});
 };
