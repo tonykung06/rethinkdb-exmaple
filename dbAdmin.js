@@ -161,6 +161,57 @@ var queryByCompoundIndex = function(next) {
 	});
 };
 
+var dropCompoundIndex = function(next) {
+	r.connect({
+		db: 'music'
+	}, function(err, conn) {
+		r.table('artists').indexDrop('my_compound_index').run(conn, function(err, res) {
+			console.log(err, res);
+			conn.close();
+			next(err, res);
+		});
+	});
+};
+
+var addArbitraryIndex = function(next) {
+	r.connect({
+		db: 'music'
+	}, function(err, conn) {
+		r.table('artists').indexCreate('name-age', function(f) {
+			return f.add(f('name'), '-', f('age'));
+		}).run(conn, function(err, res) {
+			console.log(err, res);
+			conn.close();
+			next(err, res);
+		});
+	});
+};
+
+var queryByArbitraryIndex = function(next) {
+	r.connect({
+		db: 'music'
+	}, function(err, conn) {
+		r.table('artists').indexWait("name-age").run(conn, function(err, res) {
+			r.table('artists').getAll('Tony-27', {
+				index: 'name-age'
+			}).run(conn, function(err, cursor) {
+				conn.close();
+
+				if (err) {
+					console.log(err);
+					next(err);
+					return;
+				}
+				
+				cursor.toArray(function(err, result) {
+					console.log(result);
+					next();
+				});
+			});
+		})
+	});
+};
+
 async.series([
 	dropDb,
 	createDb,
@@ -171,7 +222,10 @@ async.series([
 	sortByIndex,
 	dropIndex,
 	addCompoundIndex,
-	queryByCompoundIndex
+	queryByCompoundIndex,
+	dropCompoundIndex,
+	addArbitraryIndex,
+	queryByArbitraryIndex
 ], function(err, res) {
 	console.log('==================================\n', err, res);
 });
