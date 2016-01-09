@@ -51,6 +51,21 @@ var addIndex = function(next) {
 		db: 'music'
 	}, function(err, conn) {
 		r.table('artists').indexCreate('name_index', r.row('name')).run(conn, function(err, res) {
+			console.log(res);
+			conn.close();
+			next();
+		});
+	});
+};
+
+var queryByIndex = function(next) {
+	r.connect({
+		db: 'music'
+	}, function(err, conn) {
+		r.table('artists').getAll('Tony', {
+			index: 'name_index'
+		}).run(conn, function(err, res) {
+			console.log(res);
 			conn.close();
 			next();
 		});
