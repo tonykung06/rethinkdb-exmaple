@@ -112,14 +112,14 @@ var sortByIndex = function(next) {
 	});
 };
 
-async.series({
-	dropped: dropDb,
-	created: createDb,
-	tables: createTables,
-	data: insertData,
-	index: addIndex,
-	query: queryByIndex,
-	sorting: sortByIndex
-}, function(err, res) {
+async.series([
+	dropDb,
+	createDb,
+	createTables,
+	insertData,
+	addIndex,
+	queryByIndex,
+	sortByIndex
+], function(err, res) {
 	console.log(res);
 });
