@@ -66,13 +66,15 @@ var queryByIndex = function(next) {
 	r.connect({
 		db: 'music'
 	}, function(err, conn) {
-		r.table('artists').indexWait("name_index").getAll('Tony', {
-			index: 'name_index'
-		}).run(conn, function(err, res) {
-			console.log(err, res);
-			conn.close();
-			next(err, res);
-		});
+		r.table('artists').indexWait("name_index").run(conn, function(err, res) {
+			r.table('artists').getAll('Tony', {
+				index: 'name_index'
+			}).run(conn, function(err, res) {
+				console.log(err, res);
+				conn.close();
+				next(err, res);
+			});
+		})
 	});
 };
 
