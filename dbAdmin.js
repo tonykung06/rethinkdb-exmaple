@@ -178,7 +178,7 @@ var addArbitraryIndex = function(next) {
 		db: 'music'
 	}, function(err, conn) {
 		r.table('artists').indexCreate('name-age', function(f) {
-			return f.add(f('name'), '-', f('age'));
+			return r.add(f('name'), '-', f('age'));
 		}).run(conn, function(err, res) {
 			console.log(err, res);
 			conn.close();
