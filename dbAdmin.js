@@ -67,11 +67,36 @@ var queryByIndex = function(next) {
 		db: 'music'
 	}, function(err, conn) {
 		r.table('artists').indexWait("name_index").run(conn, function(err, res) {
-			r.table('artists').getAll('Tony', {
+			r.table('artists').getAll('Tony', 'Wini', {
 				index: 'name_index'
 			}).run(conn, function(err, cursor) {
 				conn.close();
+
+				if (err) {
+					console.log(err);
+					next(err);
+					return;
+				}
 				
+				cursor.toArray(function(err, result) {
+					console.log(result);
+					next();
+				});
+			});
+		})
+	});
+};
+
+var sortByIndex = function(next) {
+	r.connect({
+		db: 'music'
+	}, function(err, conn) {
+		r.table('artists').indexWait("name_index").run(conn, function(err, res) {
+			r.table('artists').orderBy({
+				index: r.desc('name_index')
+			}).run(conn, function(err, cursor) {
+				conn.close();
+
 				if (err) {
 					console.log(err);
 					next(err);
@@ -93,7 +118,8 @@ async.series({
 	tables: createTables,
 	data: insertData,
 	index: addIndex,
-	query: queryByIndex
+	query: queryByIndex,
+	sorting: sortByIndex
 }, function(err, res) {
 	console.log(res);
 });
