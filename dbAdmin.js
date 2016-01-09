@@ -5,6 +5,7 @@ var artists = require('./data/artists');
 var dropDb = function(next) {
 	r.connect(function(err, conn) {
 		r.dbDrop('music').run(conn, function(err, res) {
+			console.log(err, res);
 			conn.close();
 			next(err, res);
 		});
@@ -14,6 +15,7 @@ var dropDb = function(next) {
 var createDb = function(next) {
 	r.connect(function(err, conn) {
 		r.dbCreate('music').run(conn, function(err, res) {
+			console.log(err, res);
 			conn.close();
 			next(err, res);
 		});
@@ -25,6 +27,7 @@ var createTable = function(name, next) {
 		db: 'music'
 	}, function(err, conn) {
 		r.tableCreate(name).run(conn, function(err, res) {
+			console.log(err, res);
 			conn.close();
 			next(err, res);
 		});
@@ -40,6 +43,7 @@ var insertData = function(next) {
 		db: 'music'
 	}, function(err, conn) {
 		r.table('artists').insert(artists).run(conn, function(err, res) {
+			console.log(err, res);
 			conn.close();
 			next(err, res);
 		});
@@ -51,7 +55,7 @@ var addIndex = function(next) {
 		db: 'music'
 	}, function(err, conn) {
 		r.table('artists').indexCreate('name_index', r.row('name')).run(conn, function(err, res) {
-			console.log(res);
+			console.log(err, res);
 			conn.close();
 			next(err, res);
 		});
@@ -65,7 +69,7 @@ var queryByIndex = function(next) {
 		r.table('artists').indexWait("name_index").getAll('Tony', {
 			index: 'name_index'
 		}).run(conn, function(err, res) {
-			console.log(res);
+			console.log(err, res);
 			conn.close();
 			next(err, res);
 		});
