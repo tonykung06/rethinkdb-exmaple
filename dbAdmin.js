@@ -41,7 +41,7 @@ var insertData = function(next) {
 	}, function(err, conn) {
 		r.table('artists').insert(artists).run(conn, function(err, res) {
 			conn.close();
-			next();
+			next(err, res);
 		});
 	});
 };
@@ -53,7 +53,7 @@ var addIndex = function(next) {
 		r.table('artists').indexCreate('name_index', r.row('name')).run(conn, function(err, res) {
 			console.log(res);
 			conn.close();
-			next();
+			next(err, res);
 		});
 	});
 };
