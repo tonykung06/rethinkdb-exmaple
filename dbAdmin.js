@@ -46,7 +46,7 @@ var insertData = function(next) {
 	});
 };
 
-var addIndex = function() {
+var addIndex = function(next) {
 	r.connect({
 		db: 'music'
 	}, function(err, conn) {
